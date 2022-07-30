@@ -14,8 +14,35 @@ require(tidyverse)
 require(tigerstats)
 davisdata <- read.csv(file="UCDavis.csv")
 ```
+
+
+```{r include=FALSE}
+require(tidyverse)
+require(tigerstats)
+data(ucdavis1)
+davisdata <- na.omit(ucdavis1)
+OurData <- chickwts
+```
+
+
+
+
+
+
 ## Our Goal is to answer this question Is there a difference between the alcohol consumed between the row
 ## you choose to sit in??
+
+
+$H_O$: Seat postion has no effect on the number of drinks one consumes
+
+
+$H_A$: Seat postion does have an effect on the number of drinks one consumes 
+
+
+
+## Methods
+
+Since seat postion is categorical and number of drinks is numerical this means we will be us Num-Cat Method.
 
 ## Now with ggplot - first select the basic data
 
@@ -35,10 +62,32 @@ basicCN + geom_boxplot()
 basicCN + geom_boxplot(notch=TRUE,outlier.color = "red") + stat_boxplot(geom ='errorbar') + labs(title="Fancy notch boxplot \n with 2 lines")
 ```
 
+
+Here we can see that based on the boxplots above, people who perfer to sit in the back tend to consume more alcohol, with people who sit the the middle coming in second. 
+
+
 ## Numerical Summarys 
+
+
+```{r}
+favstats(alcohol~Seat,data=davisdata)
+```
+
+Based upon the chart above it seems that people who sit in the back consume a higher number of drinks than those who sit in the middle or front. We can tell this because the mean for those who sit in the back is 9.625, which is higher than all the other averages. 
+
 
 ## Inferential Tests
 
+
+
+```{r}
+model1 <- aov(alcohol~Seat,data=davisdata)
+summary.aov(model1)
+```
+
+
+
+
 ## Conclusions
 
-
+Based off the evidence we have gathered it is safe to say that we can reject the null hypothesis. Seat postion does have an effect on the amount of alcohol one consumes, with those who sit in the back consuming the highest amount of alcohol. 
